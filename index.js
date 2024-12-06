@@ -94,14 +94,14 @@ async function run() {
     
     app.patch('/games/:id', async (req, res) => {
         const id = req.params.id;
-        const newReview = req.body;
+        console.log(id);
+        const updatedGame = req.body;
         const filter = { _id: new ObjectId(id) };
-        const game = await gameCollection.findOne(filter); 
-        const reviewsArray = game.reviews;
-        const updatedReviewsArray = [...reviewsArray,newReview];
         const updatedDoc = {
             $set: {
-                reviews: updatedReviewsArray
+                title: updatedGame.title,
+                coverImg: updatedGame.coverImg,
+                reviews: updatedGame.reviews
             }
         }
         const result = await gameCollection.updateOne(filter, updatedDoc);
