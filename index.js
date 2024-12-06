@@ -94,7 +94,6 @@ async function run() {
     
     app.patch('/games/:id', async (req, res) => {
         const id = req.params.id;
-        console.log(id);
         const updatedGame = req.body;
         const filter = { _id: new ObjectId(id) };
         const updatedDoc = {
@@ -106,6 +105,14 @@ async function run() {
         }
         const result = await gameCollection.updateOne(filter, updatedDoc);
         res.send(result);
+    })
+
+    // Delete Requests
+    app.delete('/reviews/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await reviewCollection.deleteOne(query);
+      res.send(result);
     })
 
     // Send a ping to confirm a successful connection
