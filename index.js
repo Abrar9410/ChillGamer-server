@@ -30,6 +30,7 @@ async function run() {
     const database = client.db("Chill-Gamer");
     const reviewCollection = database.collection("reviews");
     const gameCollection = database.collection("games");
+    const watchListCollection = database.collection("watchList")
 
     // GET requests
     app.get('/reviews', async (req, res) => {
@@ -58,6 +59,12 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/watchList', async (req, res) => {
+        const cursor = watchListCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
     // POST requests
     app.post('/reviews', async (req, res) => {
         const newReview = req.body;
@@ -68,6 +75,12 @@ async function run() {
     app.post('/games', async (req, res) => {
         const newGame = req.body;
         const result = await gameCollection.insertOne(newGame);
+        res.send(result);
+    })
+    
+    app.post('/watchList', async (req, res) => {
+        const wishedGame = req.body;
+        const result = await watchListCollection.insertOne(wishedGame);
         res.send(result);
     })
 
@@ -100,7 +113,8 @@ async function run() {
             $set: {
                 title: updatedGame.title,
                 coverImg: updatedGame.coverImg,
-                reviews: updatedGame.reviews
+                reviews: updatedGame.reviews,
+                avgRating: updatedGame.avgRating
             }
         }
         const result = await gameCollection.updateOne(filter, updatedDoc);
@@ -112,6 +126,13 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await reviewCollection.deleteOne(query);
+      res.send(result);
+    })
+    
+    app.delete('/watchList/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await watchListCollection.deleteOne(query);
       res.send(result);
     })
 
