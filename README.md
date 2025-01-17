@@ -1,6 +1,6 @@
 # **ChillGamer**
 
-This is the Server sid of my project "ChillGamer: A Game Review Application"
+This is the Server side of my project "ChillGamer: A Game Review Application"
 
 
 
